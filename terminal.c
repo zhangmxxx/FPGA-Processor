@@ -23,11 +23,10 @@ static struct
 };
 #define NR_CMD ARRLEN(cmd_table)
 
-static int cmd_help(char *str) {
+static int cmd_help(char *arg) {
   /* extract the first argument */
   /* strtok stores the target string, so NULL arg here must follow the original strtok(str) somewhere*/
   //char *arg = strtok(str, " ");
-  char *arg = str;
   int i;
 
   if (arg == NULL)
@@ -61,9 +60,9 @@ static int cmd_hello(char *args) {
 
 static int cmd_time(char *args) {
   uint32_t cur_time = get_time();
-  uint32_t s = cur_time / 1000000;
-  uint32_t m = s / 60;
-  uint32_t h = m / 60;
+  uint32_t s = (cur_time / 1000000) % 60;
+  uint32_t m = ((cur_time / 1000000) / 60) % 60;
+  uint32_t h = ((cur_time / 1000000) / 3600) % 24;
   printf("Time after boot: %dh%dm%ds\n", (int)h, (int)m, (int)s);
   return 0;
 }
@@ -82,3 +81,78 @@ static int cmd_echo(char *args) {
   return 0;
 }
 
+static void shell_prompt() {
+  clear_line();
+  printf("(remu):");
+}
+
+static void exec(char *str) {
+  char *str_end = str + strlen(str);
+  char cmd[32];
+  int len = 0;
+  int has_content = 0;
+  memset(cmd, 0, sizeof(cmd));
+
+  /* extract cmd */
+  while(str < str_end && *str && *str != ' ') {
+    cmd[len++] = *str;
+    str++;
+  }
+
+  /* check existence of commands */
+  for (int i = 0; i < strlen(cmd); ++i) {
+    if (cmd[i] != ' ') has_content = 1;
+  }
+  if (!has_content) return;
+
+  /* extract args */
+  char *args = str + 1;
+  if (args >= str_end) {
+    args = NULL;
+  }
+
+  /* execute the command */
+  int i;
+  for (i = 0; i < NR_CMD; i ++) {
+    if (strcmp(cmd, cmd_table[i].name) == 0) {
+      int res = cmd_table[i].handler(args);
+      if (res < 0) return; 
+      if (res > 0) printf("Invalid command format!\n");
+      break;
+    }
+  }
+  if (i == NR_CMD) { printf("Unknown command '%s'\n", cmd); }
+}
+
+static char buf[256]; // stores the command
+
+void shell_run() {
+  uint32_t bt = get_time();
+  int cursor = 0;
+  while(1) {
+    shell_prompt();
+    memset(buf, 0, sizeof(buf));
+    int cur = 0;
+    while(1) {
+      /* cursor */
+      uint32_t ct = get_time();
+      if (ct - bt >= 500000) {
+        bt = ct;
+        cursor = !cursor;
+      }
+      if (cursor) blink(1);
+      else blink(0);
+
+      /* read key */
+      char key = get_key();
+      if (key == 0) continue;
+      if (key == 10) {
+        putch('\n');
+        exec(buf);
+        break;
+      }
+      putch(key);
+      buf[cur++] = key;
+    }
+  }
+}

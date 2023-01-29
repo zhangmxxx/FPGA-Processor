@@ -18,6 +18,7 @@
 
 void putstr(char* str);
 void putch(char ch);
+void clear_line();        // clear the next line
 void blink(int cursor); // to be removed from sys.c
 char get_key();
 uint32_t get_time();

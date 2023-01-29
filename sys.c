@@ -19,18 +19,19 @@ uint32_t *clk_port = (uint32_t *) CLK_PORT;
 uint32_t  boot_time = 0;
 
 /* vga */
+void draw_ch(char ch, int h, int v) {
+  vga_start[(h << 7) + v + line_offset] = ch;
+}
+
 void vga_init() {
   v_pos = 0;
   h_pos = 0;
+  *line_offset_port = 0;
   for (int i = 0; i < VGA_MAXLINE; ++i) {
     for (int j = 0; j < VGA_MAXCOL; ++j) {
-      vga_start[(j << 7) + i] = 0;
+      draw_ch(0, j, i);
     }
   }
-}
-
-void draw_ch(char ch, int h, int v) {
-  vga_start[(h << 7) + v + line_offset] = ch;
 }
 
 void blink(int cursor) {
@@ -41,6 +42,7 @@ void blink(int cursor) {
 void putch(char ch) {
   // backspace
   if (ch == 8) {
+    draw_ch(0, h_pos, v_pos); // clear cursor if it exists, cur_pos should not contain valid char
     if (h_pos) h_pos--;
     else {
       if (v_pos) {
@@ -64,6 +66,7 @@ void putch(char ch) {
 
   // enter
   if (ch == 10) {
+    draw_ch(0, h_pos, v_pos); // clear cursor if it exists
     if (v_pos + 1 < VGA_MAXLINE) {
       v_pos++;
       h_pos = 0;
@@ -95,6 +98,12 @@ void putch(char ch) {
 void putstr(char *str) {
   for (char *p = str; *p != 0; ++p) { 
     putch(*p);
+  }
+}
+
+void clear_line() {
+  for (int i = 0; i < VGA_MAXCOL; ++i) {
+    draw_ch(0, i, v_pos);
   }
 }
 
