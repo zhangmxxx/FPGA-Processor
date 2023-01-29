@@ -1,10 +1,8 @@
 # FPGA-Processor
 
 ### terminal
-Shell display and command decode.
-
+包含了Shell运行所需的代码, 以及一些简单命令的实现(cmd_xxx).
 ### built-in-app
-Code for shell supported programs.
-
+包含了Shell所支持的较为复杂的程序.
 ### klib-x
-Substitution for stdlib.
+包含了stdlib, stdio, string的部分实现. 

@@ -19,8 +19,7 @@ int main()
   vga_init();
   kbd_init();
   timer_init();
-  printf("I love lxt\n");
-  shell_run();
 
+  shell_run();
   return 0;
 }
