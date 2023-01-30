@@ -4,11 +4,13 @@
 #include <stddef.h>
 #include <stdarg.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+#define ARRLEN(list) (sizeof(list) / sizeof(list[0]))
 
 // string.h
 void  *memset    (void *s, int c, size_t n);

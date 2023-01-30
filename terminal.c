@@ -1,13 +1,13 @@
 #include "terminal.h"
 #include "built-in-app.h"
 
-
-#define ARRLEN(list) (sizeof(list) / sizeof(list[0]))
+int expr(char *line, bool *success);
 static int cmd_help(char *args);
 static int cmd_hello(char *args);
 static int cmd_time(char *args);
 static int cmd_fib(char *args);
 static int cmd_echo(char *args);
+static int cmd_expr(char *args);
 
 static struct
 {
@@ -19,7 +19,8 @@ static struct
   {"hello", "Print Hello world and welcome info", cmd_hello},
   {"time", "Print current time from boot time", cmd_time},
   {"fib", "Calculate fibonaci number", cmd_fib},
-  {"echo", "Simplified echo command as Linux version", cmd_echo}
+  {"echo", "Simplified echo command as Linux version", cmd_echo},
+  {"expr", "Simple calculator", cmd_expr}
 };
 #define NR_CMD ARRLEN(cmd_table)
 
@@ -78,6 +79,17 @@ static int cmd_fib(char *args) {
 
 static int cmd_echo(char *args) {
   printf("%s\n", args);
+  return 0;
+}
+
+static int cmd_expr(char *args) {
+  bool success = false;
+  int ret = expr(args, &success);
+  if (!success) {
+    printf("Bad expression!\n");
+    return -1;
+  }
+  printf("Result: %d\n", ret);
   return 0;
 }
 
@@ -147,9 +159,19 @@ void shell_run() {
       char key = get_key();
       if (key == 0) continue;
       if (key == 10) {
-        putch('\n');
+        putch(key);
         exec(buf);
         break;
+      }
+      if (key == 20) {
+        putch(key);
+        continue;
+      }
+      if (key == 8) {
+        putch(key);
+        if (cur) buf[--cur] = 0;
+        else buf[cur] = 0;
+        continue;
       }
       putch(key);
       buf[cur++] = key;

@@ -27,7 +27,7 @@ void vga_init() {
   v_pos = 0;
   h_pos = 0;
   *line_offset_port = 0;
-  for (int i = 0; i < VGA_MAXLINE; ++i) {
+  for (int i = 0; i < VMEM_MAXLINE; ++i) {
     for (int j = 0; j < VGA_MAXCOL; ++j) {
       draw_ch(0, j, i);
     }
@@ -76,6 +76,12 @@ void putch(char ch) {
       *line_offset_port = line_offset;
       h_pos = 0;
     }
+    return;
+  }
+  
+  // capslock 
+  if (ch == 20) {
+    capslock = !capslock;
     return;
   }
 

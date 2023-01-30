@@ -2,6 +2,7 @@
 #define SYS_H
 
 #include <stdint.h>
+#define word_t uint32_t
 
 #define VGA_START    0x00200000
 #define VGA_LINE_O   0x00210000
@@ -11,6 +12,7 @@
 
 
 #define VGA_MAXLINE  30
+#define VMEM_MAXLINE 128
 #define LINE_MASK    0x3f
 #define VGA_MAXCOL   70
 #define TAIL_MASK    0x01f
