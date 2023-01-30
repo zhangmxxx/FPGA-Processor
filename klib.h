@@ -27,7 +27,7 @@ int    strncmp   (const char *s1, const char *s2, size_t n);
 // stdlib.h
 int    abs       (int x);
 int    atoi      (const char *nptr);
-
+int    htoi      (char *str);
 // stdio.h
 int    printf    (const char *format, ...);
 int    sprintf   (char *str, const char *format, ...);

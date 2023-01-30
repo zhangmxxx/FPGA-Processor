@@ -4,10 +4,14 @@
 
 /* vga */
 char *vga_start = (char *) VGA_START;
+char *col_start = (char *) COL_START;
 int  *line_offset_port = (int *) VGA_LINE_O;
 int   v_pos = 0;
 int   h_pos = 0;
 int   line_offset = 0;
+uint32_t  front_color = 0xfff;
+uint32_t  back_color  = 0x000;
+
 
 /* keyboard */
 uint32_t *kbd_port = (uint32_t *) KBD_PORT;
@@ -19,8 +23,16 @@ uint32_t *clk_port = (uint32_t *) CLK_PORT;
 uint32_t  boot_time = 0;
 
 /* vga */
+void set_color(uint32_t fc, uint32_t bc) {
+  front_color = fc;
+  back_color  = bc;
+}
+
 void draw_ch(char ch, int h, int v) {
+  uint32_t color = (front_color << 12) | back_color;
+  uint32_t *idx = (uint32_t *)(col_start + (h << 7) + v + line_offset);
   vga_start[(h << 7) + v + line_offset] = ch;
+  *idx = color; // 4-byte for one address here. (uint32_t *)++ is not used
 }
 
 void vga_init() {
@@ -76,6 +88,7 @@ void putch(char ch) {
       *line_offset_port = line_offset;
       h_pos = 0;
     }
+    clear_line();
     return;
   }
   

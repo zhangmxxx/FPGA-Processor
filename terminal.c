@@ -95,7 +95,9 @@ static int cmd_expr(char *args) {
 
 static void shell_prompt() {
   clear_line();
+  set_color(0x0f0, 0x000);
   printf("(remu):");
+  set_color(0xfff, 0x000);
 }
 
 static void exec(char *str) {

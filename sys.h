@@ -6,6 +6,7 @@
 
 #define VGA_START    0x00200000
 #define VGA_LINE_O   0x00210000
+#define COL_START    0x00220000
 #define KBD_PORT     0x00300000
 #define KBD_INFO     0x00310000
 #define CLK_PORT     0x00400000
@@ -20,8 +21,9 @@
 
 void putstr(char* str);
 void putch(char ch);
-void clear_line();        // clear the next line
-void blink(int cursor); // to be removed from sys.c
+void clear_line();        
+void blink(int cursor); 
+void set_color(uint32_t fc, uint32_t bc);
 char get_key();
 uint32_t get_time();
 
