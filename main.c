@@ -16,11 +16,9 @@ void entry()
 
 int main()
 {
-  vga_init();
   kbd_init();
   timer_init();
-  led_write(15);
-  seg_write(0x1234abcf);
+  menu_run();
   shell_run();
   return 0;
 }

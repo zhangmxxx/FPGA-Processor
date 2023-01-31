@@ -44,10 +44,16 @@ void draw_ch(char ch, int h, int v) {
   *idx = color; // 4-byte for one address here. (uint32_t *)++ is not used
 }
 
+void set_cursor(int h, int v) {
+  h_pos = h;
+  v_pos = v;
+}
+
 void vga_init() {
   v_pos = 0;
   h_pos = 0;
   *line_offset_port = 0;
+  set_color(SYS_WHITE, SYS_BLACK);
   for (int i = 0; i < VMEM_MAXLINE; ++i) {
     for (int j = 0; j < VGA_MAXCOL; ++j) {
       draw_ch(0, j, i);
@@ -72,6 +78,7 @@ void asni_handle(int code) {
     case 35: {set_color(SYS_MAGENTA, -1); break;}
     case 36: {set_color(SYS_CYAN, -1); break;}
     case 37: {set_color(SYS_WHITE, -1); break;}
+    case 38: {set_color(SYS_GRAY, -1); break;}
     case 40: {set_color(-1, SYS_BLACK); break;}
     case 41: {set_color(-1, SYS_RED); break;}
     case 42: {set_color(-1, SYS_GREEN); break;}
@@ -80,6 +87,7 @@ void asni_handle(int code) {
     case 45: {set_color(-1, SYS_MAGENTA); break;}
     case 46: {set_color(-1, SYS_CYAN); break;}
     case 47: {set_color(-1, SYS_WHITE); break;}
+    case 48: {set_color(-1, SYS_GRAY); break;}
   }
 }
 
@@ -207,4 +215,12 @@ void led_write(uint32_t data) {
 void seg_write(uint32_t data) {
   seg_data = data;
   *seg_port = seg_data;
+}
+
+void sleep(uint32_t interval) {
+  uint32_t base_time = get_time();
+  while(1) {
+    uint32_t cur_time = get_time();
+    if (cur_time - base_time >= interval * 1000) break;
+  }
 }

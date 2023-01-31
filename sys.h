@@ -29,10 +29,12 @@
 #define SYS_MAGENTA 0xf0f
 #define SYS_CYAN    0x0ff
 #define SYS_WHITE   0xfff
-
+#define SYS_GRAY    0x111
 
 void putstr(char* str);
 void putch(char ch);
+void draw_ch(char ch, int h, int v); // give this `static' api for painting in terminal.c
+void set_cursor(int h, int v); // give this `static' api for painting in terminal.c
 void clear_line();        
 void blink(int cursor); 
 void set_color(uint32_t fc, uint32_t bc);
@@ -41,7 +43,7 @@ char get_key();
 uint32_t get_time();
 void led_write(uint32_t data);
 void seg_write(uint32_t data);
-
+void sleep(uint32_t interval);
 
 void vga_init();
 void kbd_init();

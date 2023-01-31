@@ -120,6 +120,7 @@ static int cmd_fuck(char *args) {
   printf(ANSI_FMT("No, thanks\n", ANSI_BG_RED));
   return 0;
 }
+ 
 static void shell_prompt() {
   clear_line();
   printf(ANSI_FMT("(remu):", ANSI_FG_GREEN));
@@ -202,6 +203,79 @@ void shell_run() {
       }
       putch(key);
       buf[cur++] = key;
+    }
+  }
+}
+
+static char passcode[] = "lxt";
+
+static void reset_input() {
+  set_color(SYS_BLACK, SYS_WHITE);
+  set_cursor(18, 16);
+  printf("                               ");
+  set_cursor(18, 16);
+}
+
+static void show_errmsg() {
+  set_cursor(25, 18);
+  printf(ANSI_FMT("Wrong Passcode!", ANSI_FG_RED ANSI_BG_GRAY));
+  sleep(1000);
+  set_cursor(25, 18);
+  printf(ANSI_FMT("               ", ANSI_FG_WHITE ANSI_BG_GRAY));
+}
+
+static inline bool check_passcode(char *input) {
+  return (strcmp(input, passcode) == 0);
+}
+
+void menu_run() {
+  uint32_t bt = get_time();
+  int cursor = 0;
+  while(1) {
+    char press = get_key();
+    if (press == 0) continue;
+    else {
+      reset_input();
+      char buf[64];
+      memset(buf, 0, sizeof(buf));
+      int cur = 0;
+      while(1) {
+        /* cursor */
+        uint32_t ct = get_time();
+        if (ct - bt >= 500000) {
+          bt = ct;
+          cursor = !cursor;
+        }
+        if (cursor) blink(1);
+        else blink(0);
+        /* key */
+        char key = get_key();
+        if (key == 0) continue;
+        if (key == 10) {
+          if (check_passcode(buf)) {
+            vga_init();
+            shell_run();
+          }
+          else {
+            show_errmsg();
+          }
+          break;
+        }
+        if (key == 20) {
+          putch(key);
+          continue;
+        }
+        if (key == 8) {
+          if (cur) {
+            buf[--cur] = 0;
+            putch(key);
+          }
+          else buf[cur] = 0;
+          continue;
+        }
+        putch(key);
+        buf[cur++] = key;
+      }
     }
   }
 }

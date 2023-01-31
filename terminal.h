@@ -12,6 +12,7 @@
 #define ANSI_FG_MAGENTA "\33[1;35m"
 #define ANSI_FG_CYAN    "\33[1;36m"
 #define ANSI_FG_WHITE   "\33[1;37m"
+#define ANSI_FG_GRAY    "\33[1;38m"
 #define ANSI_BG_BLACK   "\33[1;40m"
 #define ANSI_BG_RED     "\33[1;41m"
 #define ANSI_BG_GREEN   "\33[1;42m"
@@ -20,11 +21,12 @@
 #define ANSI_BG_MAGENTA "\33[1;45m"
 #define ANSI_BG_CYAN    "\33[1;46m"
 #define ANSI_BG_WHITE   "\33[1;47m"
+#define ANSI_BG_GRAY    "\33[1;48m"
 #define ANSI_NONE       "\33[0m"
 
 #define ANSI_FMT(str, fmt) fmt str ANSI_NONE
 
 
 void shell_run();
-
+void menu_run();
 #endif
