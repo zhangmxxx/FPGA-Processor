@@ -45,3 +45,11 @@ unsigned int __udivsi3(unsigned int a, unsigned int b) {
     }
     return res;
 }
+
+int __divsi3(int a, int b) {
+  unsigned int abs_a = a < 0 ? -a : a;
+  unsigned int abs_b = b < 0 ? -b : b;
+  // int flag = (a * b) < 0 ? -1 : 1; (a * b) may overflow
+  int flag = ((a < 0 && b < 0) || (a > 0 && b > 0)) ? 1 : -1;
+  return flag * (int)__udivsi3(abs_a, abs_b);
+}

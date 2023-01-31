@@ -2,12 +2,15 @@
 #include "built-in-app.h"
 
 int expr(char *line, bool *success);
+int dhrystone_main ();
 static int cmd_help(char *args);
 static int cmd_hello(char *args);
 static int cmd_time(char *args);
 static int cmd_fib(char *args);
 static int cmd_echo(char *args);
 static int cmd_expr(char *args);
+static int cmd_dry(char *args);
+static int cmd_fuck(char *args);
 
 static struct
 {
@@ -20,7 +23,9 @@ static struct
   {"time", "Print current time from boot time", cmd_time},
   {"fib", "Calculate fibonaci number", cmd_fib},
   {"echo", "Simplified echo command as Linux version", cmd_echo},
-  {"expr", "Simple calculator", cmd_expr}
+  {"expr", "Simple calculator", cmd_expr},
+  {"dhrystone", "Run dhrystone to access the performance", cmd_dry},
+  {"fuck", "114514", cmd_fuck}
 };
 #define NR_CMD ARRLEN(cmd_table)
 
@@ -93,6 +98,15 @@ static int cmd_expr(char *args) {
   return 0;
 }
 
+static int cmd_dry(char *args) {
+  dhrystone_main();
+  return 0;
+}
+
+static int cmd_fuck(char *args) {
+  printf(ANSI_FMT("No, thanks\n", ANSI_BG_RED));
+  return 0;
+}
 static void shell_prompt() {
   clear_line();
   printf(ANSI_FMT("(remu):", ANSI_FG_GREEN));
