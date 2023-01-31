@@ -22,6 +22,15 @@ uint32_t  capslock = 0;
 uint32_t *clk_port = (uint32_t *) CLK_PORT;
 uint32_t  boot_time = 0;
 
+/* led */
+uint16_t *led_port = (uint16_t *) LED_PORT;
+uint32_t  led_data = 0;
+
+/* seg */
+uint32_t *seg_port = (uint32_t *) SEG_PORT;
+uint32_t  seg_data = 0;
+ 
+
 /* vga */
 void set_color(uint32_t fc, uint32_t bc) {
   if (fc != -1) front_color = fc;
@@ -186,4 +195,16 @@ void timer_init() {
 
 uint32_t get_time() {
   return (*clk_port) - boot_time;
+}
+
+/* led */
+void led_write(uint32_t data) {
+  led_data = (uint16_t)data;
+  *led_port = led_data;
+}
+
+/* seg */
+void seg_write(uint32_t data) {
+  seg_data = data;
+  *seg_port = seg_data;
 }

@@ -9,6 +9,8 @@ static int cmd_time(char *args);
 static int cmd_fib(char *args);
 static int cmd_echo(char *args);
 static int cmd_expr(char *args);
+static int cmd_seg(char *args);
+static int cmd_led(char *args);
 static int cmd_dry(char *args);
 static int cmd_fuck(char *args);
 
@@ -24,6 +26,8 @@ static struct
   {"fib", "Calculate fibonaci number", cmd_fib},
   {"echo", "Simplified echo command as Linux version", cmd_echo},
   {"expr", "Simple calculator", cmd_expr},
+  {"seg", "Write into seg", cmd_seg},
+  {"led", "Write into led", cmd_led},
   {"dhrystone", "Run dhrystone to access the performance", cmd_dry},
   {"fuck", "114514", cmd_fuck}
 };
@@ -98,6 +102,15 @@ static int cmd_expr(char *args) {
   return 0;
 }
 
+static int cmd_seg(char *args) {
+  seg_write(htoi(args));
+  return 0;
+}
+
+static int cmd_led(char *args) {
+  led_write(htoi(args));
+  return 0;
+}
 static int cmd_dry(char *args) {
   dhrystone_main();
   return 0;

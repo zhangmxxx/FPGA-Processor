@@ -10,7 +10,8 @@
 #define KBD_PORT     0x00300000
 #define KBD_INFO     0x00310000
 #define CLK_PORT     0x00400000
-
+#define LED_PORT     0x00500000
+#define SEG_PORT     0x00600000
 
 #define VGA_MAXLINE  30
 #define VGA_MAXCOL   70
@@ -38,6 +39,9 @@ void set_color(uint32_t fc, uint32_t bc);
 void asni_handle(int code);
 char get_key();
 uint32_t get_time();
+void led_write(uint32_t data);
+void seg_write(uint32_t data);
+
 
 void vga_init();
 void kbd_init();
