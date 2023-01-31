@@ -28,6 +28,9 @@ int    strncmp   (const char *s1, const char *s2, size_t n);
 int    abs       (int x);
 int    atoi      (const char *nptr);
 int    htoi      (char *str);
+void   itoa      (unsigned int n, char * buf);
+void   xtoa      (unsigned int n, char *buf);
+
 // stdio.h
 int    printf    (const char *format, ...);
 int    sprintf   (char *str, const char *format, ...);

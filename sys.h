@@ -13,17 +13,29 @@
 
 
 #define VGA_MAXLINE  30
+#define VGA_MAXCOL   70
 #define VMEM_MAXLINE 128
 #define LINE_MASK    0x3f
-#define VGA_MAXCOL   70
 #define TAIL_MASK    0x01f
 #define HEAD_MASK    0x3e0
+
+
+#define SYS_BLACK   0x000
+#define SYS_RED     0xf00
+#define SYS_GREEN   0x0f0
+#define SYS_YELLOW  0xff0
+#define SYS_BLUE    0x00f
+#define SYS_MAGENTA 0xf0f
+#define SYS_CYAN    0x0ff
+#define SYS_WHITE   0xfff
+
 
 void putstr(char* str);
 void putch(char ch);
 void clear_line();        
 void blink(int cursor); 
 void set_color(uint32_t fc, uint32_t bc);
+void asni_handle(int code);
 char get_key();
 uint32_t get_time();
 

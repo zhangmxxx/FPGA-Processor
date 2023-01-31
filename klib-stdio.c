@@ -8,42 +8,21 @@
 
 /* *buf++ = x; *buf = '\0'  : 下一次buf写入时覆盖\0, 没有问题*/
 
-void itoa(unsigned int n, char * buf) {
-  if (n == 0) {
-    *buf++ = '0';
-    *buf = '\0';
-    return;
+static inline int asni_readnum(char **fmt) {
+  int ret = 0;
+  while (*(*fmt) != ';' && *(*fmt) != 'm') {
+    ret *= 10;
+    ret += *(*fmt) - '0';
+    (*fmt)++; // should stop at `;' or `m'
   }
-  while(n){
-    *buf++ = n % 10 + '0';
-    n /= 10;
-  }
-  *buf = '\0';
-}
-
-void xtoa(unsigned int n, char *buf) {
-  if (n == 0) {
-    *buf++ = '0';
-    *buf = '\0';
-    return;
-  }
-  while(n){
-    int t = n % 16;
-    if (t < 10) {
-      *buf++ = t + '0';
-    }
-    else {
-      *buf++ = t - 10 + 'a';
-    }
-    n /= 16;
-  }
-  *buf = '\0';
+  return ret;
 }
 
 // to support gcc translation of printf(\n) to puts
 int puts(const char *str) {
   putstr(str);
   putch('\n');
+  return strlen(str);
 }
 
 int printf(const char *fmt, ...) {
@@ -53,9 +32,17 @@ int printf(const char *fmt, ...) {
   memset(buf, 0, sizeof(buf));
   vsprintf(buf, fmt, args);
   va_end(args);
-  int len = strlen(buf);
-  for (int i = 0; i < len; ++i){
-    putch(buf[i]);
+  char *p = buf;
+  while (*p != '\0') {
+    if (*p == '\33') {
+      p++; // point to [
+      do { p++; asni_handle(asni_readnum(&p)); } while(*p != 'm');
+      p++;
+    }
+    else {
+      putch(*p);
+      p++;
+    }
   }
   return strlen(buf);
 }

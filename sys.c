@@ -24,8 +24,8 @@ uint32_t  boot_time = 0;
 
 /* vga */
 void set_color(uint32_t fc, uint32_t bc) {
-  front_color = fc;
-  back_color  = bc;
+  if (fc != -1) front_color = fc;
+  if (bc != -1) back_color  = bc;
 }
 
 void draw_ch(char ch, int h, int v) {
@@ -49,6 +49,29 @@ void vga_init() {
 void blink(int cursor) {
   if (cursor) draw_ch(221, h_pos, v_pos);
   else draw_ch(0, h_pos, v_pos);
+}
+
+// only support color control
+void asni_handle(int code) {
+  switch(code) {
+    case 0 : {set_color(SYS_WHITE, SYS_BLACK); break;}
+    case 30: {set_color(SYS_BLACK, -1); break;}
+    case 31: {set_color(SYS_RED, -1); break;}
+    case 32: {set_color(SYS_GREEN, -1); break;}
+    case 33: {set_color(SYS_YELLOW, -1); break;}
+    case 34: {set_color(SYS_BLUE, -1); break;}
+    case 35: {set_color(SYS_MAGENTA, -1); break;}
+    case 36: {set_color(SYS_CYAN, -1); break;}
+    case 37: {set_color(SYS_WHITE, -1); break;}
+    case 40: {set_color(-1, SYS_BLACK); break;}
+    case 41: {set_color(-1, SYS_RED); break;}
+    case 42: {set_color(-1, SYS_GREEN); break;}
+    case 43: {set_color(-1, SYS_YELLOW); break;}
+    case 44: {set_color(-1, SYS_BLUE); break;}
+    case 45: {set_color(-1, SYS_MAGENTA); break;}
+    case 46: {set_color(-1, SYS_CYAN); break;}
+    case 47: {set_color(-1, SYS_WHITE); break;}
+  }
 }
 
 void putch(char ch) {

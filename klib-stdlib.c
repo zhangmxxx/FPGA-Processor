@@ -28,3 +28,35 @@ int htoi(char* str) {
   }
   return ret;
 }
+
+void itoa(unsigned int n, char * buf) {
+  if (n == 0) {
+    *buf++ = '0';
+    *buf = '\0';
+    return;
+  }
+  while(n){
+    *buf++ = n % 10 + '0';
+    n /= 10;
+  }
+  *buf = '\0';
+}
+
+void xtoa(unsigned int n, char *buf) {
+  if (n == 0) {
+    *buf++ = '0';
+    *buf = '\0';
+    return;
+  }
+  while(n){
+    int t = n % 16;
+    if (t < 10) {
+      *buf++ = t + '0';
+    }
+    else {
+      *buf++ = t - 10 + 'a';
+    }
+    n /= 16;
+  }
+  *buf = '\0';
+}

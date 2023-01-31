@@ -64,7 +64,7 @@ static int cmd_time(char *args) {
   uint32_t s = (cur_time / 1000000) % 60;
   uint32_t m = ((cur_time / 1000000) / 60) % 60;
   uint32_t h = ((cur_time / 1000000) / 3600) % 24;
-  printf("Time after boot: %dh%dm%ds\n", (int)h, (int)m, (int)s);
+  printf(ANSI_FMT("Time after boot: %dh %dm %ds\n", ANSI_BG_BLUE ANSI_FG_WHITE), (int)h, (int)m, (int)s);
   return 0;
 }
 
@@ -95,9 +95,7 @@ static int cmd_expr(char *args) {
 
 static void shell_prompt() {
   clear_line();
-  set_color(0x0f0, 0x000);
-  printf("(remu):");
-  set_color(0xfff, 0x000);
+  printf(ANSI_FMT("(remu):", ANSI_FG_GREEN));
 }
 
 static void exec(char *str) {
