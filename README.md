@@ -34,10 +34,10 @@ make
 ```SCSS
 .
 ├── hardware
-│   ├── asm-test                      // 汇编语言实现的键盘, vga模块测试代码
+│   ├── asm-test                  // 汇编语言实现的键盘, vga模块测试代码
 │   │   ├── kbd-test.asm
 │   │   └── vga-test.asm
-│   ├── coefficient                   // 存储器的初始化文件, 约束文件以及字模
+│   ├── coefficient               // 存储器的初始化文件, 约束文件以及字模
 │   │   ├── char_init.coe			  
 │   │   ├── color_init.coe
 │   │   ├── data.coe
@@ -45,7 +45,7 @@ make
 │   │   ├── nexysa7.xdc
 │   │   └── vga_font.txt
 │   └── source
-│       ├── ip						  // Vivado生成的ip核文件
+│       ├── ip                    // Vivado生成的ip核文件
 │       │   ├── char_buf
 │       │   ├── clk_wiz_0
 │       │   ├── clk_wiz_0_1
@@ -53,7 +53,7 @@ make
 │       │   ├── color_buf
 │       │   ├── d_mem
 │       │   └── imem
-│       └── new						  // 模块verilog实现
+│       └── new                   // 模块verilog实现
 │           ├── ALU.v
 │           ├── bcd7seg.v
 │           ├── clk_gen.v
@@ -72,21 +72,21 @@ make
 │           └── vga_ctrl.v
 ├── README.md
 └── software
-    ├── built-in-app.c				 // 内建终端支持的较为复杂的应用程序
+    ├── built-in-app.c            // 内建终端支持的较为复杂的应用程序
     ├── built-in-app.h
-    ├── dry.c						 // dhrystone跑分程序
-    ├── key-def.h					 // 键码相关定义
+    ├── dry.c                     // dhrystone跑分程序
+    ├── key-def.h                 // 键码相关定义
     ├── klib.h						 
     ├── klib-stdio.c				 
     ├── klib-stdlib.c
     ├── klib-string.c
     ├── main.c
     ├── Makefile
-    ├── mul.c						 // rv32i乘除法链接源码
+    ├── mul.c                     // rv32i乘除法链接源码
     ├── sections.ld
-    ├── sys.c						 // 底层api实现
+    ├── sys.c                     // 底层api实现
     ├── sys.h
-    ├── terminal.c					 // 内建终端
+    ├── terminal.c                // 内建终端
     └── terminal.h
 ```
 
