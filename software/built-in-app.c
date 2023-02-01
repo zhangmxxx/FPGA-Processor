@@ -9,7 +9,7 @@ void fib_help() {
 
 int fib_cal(int n) {
   if (n > 48) {
-    //printf("Overflow for int\n");
+    printf("Overflow for int\n");
     return -1;
   }
 

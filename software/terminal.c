@@ -23,7 +23,7 @@ static struct
   {"help", "Print information about supported commands", cmd_help},
   {"hello", "Print Hello world and welcome info", cmd_hello},
   {"time", "Print current time from boot time", cmd_time},
-  {"fib", "Calculate fibonaci number", cmd_fib},
+  {"fib", "Calculate fibonacci number", cmd_fib},
   {"echo", "Simplified echo command as Linux version", cmd_echo},
   {"expr", "Simple calculator", cmd_expr},
   {"seg", "Write into seg", cmd_seg},
