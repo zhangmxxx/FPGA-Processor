@@ -196,8 +196,10 @@ void shell_run() {
         continue;
       }
       if (key == 8) {
-        putch(key);
-        if (cur) buf[--cur] = 0;
+        if (cur) {
+          putch(key);
+          buf[--cur] = 0;
+        }
         else buf[cur] = 0;
         continue;
       }
